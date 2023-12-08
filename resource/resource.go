@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"reflect"
 	"sort"
 	"strings"
 	"sync"
@@ -79,27 +80,44 @@ func makeResource(account, region string, kind ResourceType, iId, iName, iVersio
 		fmt.Fprintf(os.Stderr, "new resource contains arn: %s - %s\n", kind.String(), id)
 	}
 	if tags, ok := asMap["Tags"]; ok {
-		switch t := tags.(type) {
-		case []interface{}:
-			for _, v := range t {
-				tag := v.(map[string]interface{})
-				key := tag["Key"].(*string)
-				value := tag["Value"].(*string)
-				resource.Tags[*key] = *value
-			}
-		case map[string]string:
-			for k, v := range t {
-				resource.Tags[k] = v
-			}
-		case map[string]*string:
-			for k, v := range t {
-				resource.Tags[k] = *v
-			}
-		case nil:
-			// no op
-		default:
-			fmt.Fprintf(os.Stderr, "Unknown tag type: %T\n", t)
-		}
+        switch t := tags.(type) {
+        case []interface{}:
+            for _, v := range t {
+                if a := reflect.ValueOf(v); a.Type().Name() == "Tag" {
+                    ty := reflect.TypeOf(v)
+                    key := ""
+                    val := ""
+                    for i := 0; i < ty.NumField(); i++{
+                        tmp := ty.Field(i)
+                        if tmp.Name == "Key" {
+                           key = a.Field(i).String()
+                        } else if tmp.Name == "Value" {
+                            val = a.Field(i).String()
+                        }
+                    }
+                    if key != "" && val != "" {
+                        resource.Tags[key] = val
+                    }
+                } else {
+                    tag := v.(map[string]interface{})
+                    key := tag["Key"].(*string)
+                    value := tag["Value"].(*string)
+                    resource.Tags[*key] = *value
+                }
+            }
+        case map[string]string:
+            for k, v := range t {
+                resource.Tags[k] = v
+            }
+        case map[string]*string:
+            for k, v := range t {
+                resource.Tags[k] = *v
+            }
+        case nil:
+            // no op
+        default:
+            fmt.Fprintf(os.Stderr, "Unknown tag type: %T\n", t)
+        }
 	}
 	return resource
 }

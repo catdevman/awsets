@@ -91,7 +91,7 @@ var listCmd = &cli.Command{
 		if c.Bool("dryrun") || c.Bool("verbose") {
 			fmt.Printf("regions: %s\n", regions)
 			types := awsets.Types(strings.Split(c.String("include"), ","), strings.Split(c.String("exclude"), ","))
-			ret := make([]string, 0)
+			ret := make([]string, len(types))
 			for _, t := range types {
 				ret = append(ret, t.String())
 			}

@@ -40,7 +40,7 @@ func Test_IsArnP(t *testing.T) {
 
 func Test_Parse(t *testing.T) {
 	tests := map[string]Arn{
-		"arn:aws:ecs:us-east-1:111000111000:cluster/test-ECSCluster-3Z3CPPG9GRGKF": Arn{
+		"arn:aws:ecs:us-east-1:111000111000:cluster/test-ECSCluster-3Z3CPPG9GRGKF": {
 			Raw:          "arn:aws:ecs:us-east-1:111000111000:cluster/test-ECSCluster-3Z3CPPG9GRGKF",
 			ARN:          "arn",
 			Partition:    "aws",
@@ -50,7 +50,7 @@ func Test_Parse(t *testing.T) {
 			ResourceType: "cluster",
 			ResourceId:   "test-ECSCluster-3Z3CPPG9GRGKF",
 		},
-		"arn:aws:logs:us-east-1:111000111000:log-group:/aws/kinesisfirehose/aws-waf-logs-us-east-1-analytics-us2:*": Arn{
+		"arn:aws:logs:us-east-1:111000111000:log-group:/aws/kinesisfirehose/aws-waf-logs-us-east-1-analytics-us2:*": {
 			Raw:             "arn:aws:logs:us-east-1:111000111000:log-group:/aws/kinesisfirehose/aws-waf-logs-us-east-1-analytics-us2:*",
 			ARN:             "arn",
 			Partition:       "aws",
@@ -61,7 +61,7 @@ func Test_Parse(t *testing.T) {
 			ResourceId:      "/aws/kinesisfirehose/aws-waf-logs-us-east-1-analytics-us2",
 			ResourceVersion: "*",
 		},
-		"arn:aws:sns:eu-west-2:111000111000:foo": Arn{
+		"arn:aws:sns:eu-west-2:111000111000:foo": {
 			Raw:        "arn:aws:sns:eu-west-2:111000111000:foo",
 			ARN:        "arn",
 			Partition:  "aws",
@@ -70,7 +70,7 @@ func Test_Parse(t *testing.T) {
 			Account:    "111000111000",
 			ResourceId: "foo",
 		},
-		"arn:aws:lambda:us-east-1:111000111000:function:foobar": Arn{
+		"arn:aws:lambda:us-east-1:111000111000:function:foobar": {
 			Raw:          "arn:aws:lambda:us-east-1:111000111000:function:foobar",
 			ARN:          "arn",
 			Partition:    "aws",
@@ -80,7 +80,7 @@ func Test_Parse(t *testing.T) {
 			ResourceType: "function",
 			ResourceId:   "foobar",
 		},
-		"arn:aws:lambda:us-east-1:111000111000:function:foobar:$LATEST": Arn{
+		"arn:aws:lambda:us-east-1:111000111000:function:foobar:$LATEST": {
 			Raw:             "arn:aws:lambda:us-east-1:111000111000:function:foobar:$LATEST",
 			ARN:             "arn",
 			Partition:       "aws",
@@ -91,14 +91,14 @@ func Test_Parse(t *testing.T) {
 			ResourceId:      "foobar",
 			ResourceVersion: "$LATEST",
 		},
-		"arn:aws:s3:::test-bucket": Arn{
+		"arn:aws:s3:::test-bucket": {
 			Raw:        "arn:aws:s3:::test-bucket",
 			ARN:        "arn",
 			Partition:  "aws",
 			Service:    "s3",
 			ResourceId: "test-bucket",
 		},
-		"arn:aws:ecs:us-east-2:111000111000:task-definition/test-OHKJUeQfdbdv:1": Arn{
+		"arn:aws:ecs:us-east-2:111000111000:task-definition/test-OHKJUeQfdbdv:1": {
 			Raw:             "arn:aws:ecs:us-east-2:111000111000:task-definition/test-OHKJUeQfdbdv:1",
 			ARN:             "arn",
 			Partition:       "aws",

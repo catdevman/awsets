@@ -49,6 +49,8 @@ func (l AWSCloudfrontDistribution) List(ctx context.AWSetsCtx) (*resource.Group,
 						if origin.S3OriginConfig != nil && origin.S3OriginConfig.OriginAccessIdentity != nil {
 							oai := strings.TrimPrefix(*origin.S3OriginConfig.OriginAccessIdentity, "origin-access-identity/cloudfront/")
 							r.AddRelation(resource.CloudFrontOriginAccessIdentity, oai, "")
+                            bucketParts := strings.Split(*origin.Id, ".")
+                            r.AddCrossRelation(ctx.AccountId, ctx.Region, resource.S3Bucket, bucketParts[0], "")
 						}
 					}
 				}

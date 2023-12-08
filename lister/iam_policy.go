@@ -39,7 +39,7 @@ func (l AWSIamPolicy) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 				return nil, err
 			}
 			for _, policy := range res.Policies {
-				r := resource.NewGlobal(ctx, resource.IamPolicy, policy.PolicyId, policy.PolicyName, policy)
+                r := resource.NewGlobal(ctx, resource.IamPolicy, policy.PolicyId, policy.PolicyName, policy)
 				rg.AddResource(r)
 			}
 			return res.Marker, nil
