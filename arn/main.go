@@ -4,6 +4,11 @@ import (
 	"strings"
 )
 
+const (
+	arnDelimiter = ":"
+	arnSections  = 6
+)
+
 type Arn struct {
 	Raw             string
 	ARN             string
@@ -24,8 +29,10 @@ func IsArnP(arn *string) bool {
 }
 
 func IsArn(arn string) bool {
-	//TODO make more sophisticated
-	return strings.HasPrefix(arn, "arn:")
+	//This is what AWS did https://github.com/aws/aws-sdk-go-v2/blob/main/aws/arn/arn.go#L81
+    //FIXME: This should probably just use what AWS uses in case they have changes in the future we don't
+    // have to copy and paste again.
+	return strings.HasPrefix(arn, "arn:") && strings.Count(arn, arnDelimiter) >= arnSections - 1
 }
 
 func ParseP(arn *string) Arn {
