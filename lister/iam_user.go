@@ -42,6 +42,8 @@ func (l AWSIamUser) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 				return nil, err
 			}
 			for _, user := range res.Users {
+                u, _ := svc.GetUser(ctx.Context, &iam.GetUserInput{UserName: user.UserName})
+                user.Tags = u.User.Tags
 				r := resource.NewGlobal(ctx, resource.IamUser, user.UserId, user.UserName, user)
 
 				// Access Keys

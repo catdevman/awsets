@@ -168,8 +168,8 @@ func List(options ...Option) (*resource.Group, error) {
 	}
 
 	// Creates a work queue
-	jobs := make(chan listjob, 0)
 	totalJobs := len(awsetsCfg.Regions) * len(awsetsCfg.Listers)
+	jobs := make(chan listjob, totalJobs)
 
 	rg := resource.NewGroup()
 
@@ -217,6 +217,7 @@ func List(options ...Option) (*resource.Group, error) {
 	close(jobs)
 
 	wg.Wait()
+    //TODO: post lister to add tags... basic go through the entire ResourceGroup and for each Resource get it the tags and add that to the resource
 	return rg, nil
 }
 

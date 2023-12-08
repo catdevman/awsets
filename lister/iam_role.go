@@ -39,6 +39,8 @@ func (l AWSIamRole) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 				return nil, err
 			}
 			for _, role := range res.Roles {
+                ro, _ := svc.GetRole(ctx.Context, &iam.GetRoleInput{RoleName: role.RoleName})
+                role.Tags = ro.Role.Tags
 				r := resource.NewGlobal(ctx, resource.IamRole, role.RoleName, role.RoleName, role)
 				rg.AddResource(r)
 			}
