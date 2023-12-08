@@ -3,7 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/trek10inc/awsets/resource"
 )
@@ -17,7 +17,7 @@ type IdLite struct {
 
 func loadData(fname string) (map[IdLite]resource.Resource, error) {
 	var resources []resource.Resource
-	data, err := ioutil.ReadFile(fname)
+	data, err := os.ReadFile(fname)
 	if err != nil {
 		return nil, err
 	}

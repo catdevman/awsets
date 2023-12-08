@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
+	"runtime"
 	"sort"
 	"strings"
 
@@ -118,6 +118,7 @@ var listCmd = &cli.Command{
 			awsets.WithRegions(regions),
 			awsets.WithListers(listers),
 			awsets.WithCache(bc),
+            awsets.WithWorkerCount(runtime.NumCPU()),
 		}
 		verbose := c.Bool("verbose")
 		showProgress := c.Bool("show-progress")
@@ -153,7 +154,7 @@ var listCmd = &cli.Command{
 						}
 					case context.StatusCompleteWithError:
 						if verbose {
-							fmt.Fprintf(os.Stderr, "complte with error: %s - %s - %s\n", update.Region, update.Lister, update.Message)
+							fmt.Fprintf(os.Stderr, "completed with error: %s - %s - %s\n", update.Region, update.Lister, update.Message)
 						}
 						if bar != nil {
 							bar.Increment()
@@ -175,7 +176,7 @@ var listCmd = &cli.Command{
 		if c.String("output") == "" {
 			fmt.Printf(j)
 		} else {
-			err = ioutil.WriteFile(c.String("output"), []byte(j), 0655)
+			err = os.WriteFile(c.String("output"), []byte(j), 0655)
 			if err != nil {
 				log.Fatalf("failed to write output file: %v\n", err)
 			}

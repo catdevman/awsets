@@ -2,8 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"io"
-	"io/ioutil"
+    "os"
 	"log"
 	"strings"
 
@@ -190,7 +189,7 @@ var dotGenerator = &cli.Command{
 		if c.String("output") == "" {
 			fmt.Printf("%s", graph.String())
 		} else {
-			err = ioutil.WriteFile(c.String("output"), []byte(graph.String()), 0655)
+			err = os.WriteFile(c.String("output"), []byte(graph.String()), 0655)
 			if err != nil {
 				log.Fatalf("failed to write output file: %v\n", err)
 			}
@@ -259,7 +258,7 @@ var cfn = &cli.Command{
 		if c.String("output") == "" {
 			fmt.Printf("%s", data)
 		} else {
-			err = ioutil.WriteFile(c.String("output"), []byte(data), 0655)
+			err = os.WriteFile(c.String("output"), []byte(data), 0655)
 			if err != nil {
 				log.Fatalf("failed to write output file: %v\n", err)
 			}
