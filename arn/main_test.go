@@ -7,7 +7,8 @@ func Test_IsArn(t *testing.T) {
 		"boop":     false,
 		"arn":      false,
 		"":         false,
-		"arn:boop": true,
+		"arn:boop": false,
+        "arn:aws:ecs:us-east-1:111000111000:cluster/test-ECSCluster-3Z3CPPG9GRGKF": true,
 	}
 	for k, v := range tests {
 		t.Run(k, func(t *testing.T) {
@@ -27,7 +28,8 @@ func Test_IsArnP(t *testing.T) {
 		nil:                       false,
 		stringPointer(""):         false,
 		stringPointer("arn"):      false,
-		stringPointer("arn:boop"): true,
+		stringPointer("arn:boop"): false,
+        stringPointer("arn:aws:ecs:us-east-1:111000111000:cluster/test-ECSCluster-3Z3CPPG9GRGKF"): true,
 	}
 	for k, v := range tests {
 		t.Run("", func(t *testing.T) {
