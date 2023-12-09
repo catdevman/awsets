@@ -40,6 +40,9 @@ func (l AWSLambdaFunction) List(ctx context.AWSetsCtx) (*resource.Group, error) 
 		for _, function := range res.Functions {
 			fxnArn := arn.ParseP(function.FunctionArn)
 			r := resource.New(ctx, resource.LambdaFunction, fxnArn.ResourceId, function.Version, function)
+            if fncConfig, err := svc.GetFunctionConfiguration(ctx.Context, &lambda.GetFunctionConfigurationInput{FunctionName: function.FunctionName}); err == nil {
+                r.AddRelation(resource.LogGroup, fncConfig.LoggingConfig.LogGroup, "")
+            }
 			r.AddARNRelation(resource.KmsKey, function.KMSKeyArn)
 
 			if function.VpcConfig != nil {

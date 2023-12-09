@@ -3,6 +3,7 @@ package lister
 import (
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/trek10inc/awsets/context"
 	"github.com/trek10inc/awsets/resource"
@@ -25,11 +26,10 @@ func (l AWSGuardDutyDetector) Types() []resource.ResourceType {
 
 func (l AWSGuardDutyDetector) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 	svc := guardduty.NewFromConfig(ctx.AWSCfg)
-
 	rg := resource.NewGroup()
 	err := Paginator(func(nt *string) (*string, error) {
 		res, err := svc.ListDetectors(ctx.Context, &guardduty.ListDetectorsInput{
-			MaxResults: 100,
+			MaxResults: aws.Int32(100),
 			NextToken:  nt,
 		})
 		if err != nil {
@@ -48,7 +48,7 @@ func (l AWSGuardDutyDetector) List(ctx context.AWSetsCtx) (*resource.Group, erro
 			err = Paginator(func(nt2 *string) (*string, error) {
 				members, err := svc.ListMembers(ctx.Context, &guardduty.ListMembersInput{
 					DetectorId:     &id,
-					MaxResults:     100,
+					MaxResults:     aws.Int32(100),
 					NextToken:      nt2,
 					OnlyAssociated: nil,
 				})

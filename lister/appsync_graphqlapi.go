@@ -127,8 +127,7 @@ func (l AWSAppsyncGraphqlApi) List(ctx context.AWSetsCtx) (*resource.Group, erro
 				apiKeys, err := svc.ListApiKeys(ctx.Context, &appsync.ListApiKeysInput{
 					ApiId:      api.ApiId,
 					MaxResults: 25,
-					NextToken:  nt2,
-				})
+					NextToken:  nt2, })
 				if err != nil {
 					return nil, fmt.Errorf("failed to get api keys for %s: %w", *api.ApiId, err)
 				}

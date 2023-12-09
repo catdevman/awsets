@@ -29,11 +29,10 @@ func (l AWSCognitoUserpool) Types() []resource.ResourceType {
 
 func (l AWSCognitoUserpool) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 	svc := cognitoidentityprovider.NewFromConfig(ctx.AWSCfg)
-
 	rg := resource.NewGroup()
 	err := Paginator(func(nt *string) (*string, error) {
 		res, err := svc.ListUserPools(ctx.Context, &cognitoidentityprovider.ListUserPoolsInput{
-			MaxResults: 60,
+			MaxResults: aws.Int32(60),
 			NextToken:  nt,
 		})
 		if err != nil {
@@ -130,7 +129,7 @@ func (l AWSCognitoUserpool) List(ctx context.AWSetsCtx) (*resource.Group, error)
 			// Resource Servers
 			err = Paginator(func(nt2 *string) (*string, error) {
 				resourceProviders, err := svc.ListResourceServers(ctx.Context, &cognitoidentityprovider.ListResourceServersInput{
-					MaxResults: 50,
+					MaxResults: aws.Int32(50),
 					UserPoolId: up.Id,
 					NextToken:  nt2,
 				})

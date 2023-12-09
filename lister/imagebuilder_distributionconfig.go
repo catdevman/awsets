@@ -5,6 +5,7 @@ import (
 
 	"github.com/trek10inc/awsets/arn"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/imagebuilder"
 
 	"github.com/trek10inc/awsets/context"
@@ -26,12 +27,11 @@ func (l AWSImageBuilderDistributionConfig) Types() []resource.ResourceType {
 }
 
 func (l AWSImageBuilderDistributionConfig) List(ctx context.AWSetsCtx) (*resource.Group, error) {
-
 	svc := imagebuilder.NewFromConfig(ctx.AWSCfg)
 	rg := resource.NewGroup()
 	err := Paginator(func(nt *string) (*string, error) {
 		res, err := svc.ListDistributionConfigurations(ctx.Context, &imagebuilder.ListDistributionConfigurationsInput{
-			MaxResults: 100,
+			MaxResults: aws.Int32(100),
 			NextToken:  nt,
 		})
 		if err != nil {

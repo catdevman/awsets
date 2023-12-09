@@ -35,6 +35,9 @@ func (l AWSEc2NetworkInterface) List(ctx context.AWSetsCtx) (*resource.Group, er
 			r := resource.New(ctx, resource.Ec2NetworkInterface, eni.NetworkInterfaceId, eni.NetworkInterfaceId, eni)
 			r.AddRelation(resource.Ec2Vpc, eni.VpcId, "")
 			r.AddRelation(resource.Ec2Subnet, eni.SubnetId, "")
+            for _, group := range eni.Groups {
+                r.AddRelation(resource.Ec2SecurityGroup, group.GroupId, "")
+            }
 			rg.AddResource(r)
 		}
 		return res.NextToken, nil

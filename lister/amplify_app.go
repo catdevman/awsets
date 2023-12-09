@@ -3,6 +3,7 @@ package lister
 import (
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/trek10inc/awsets/arn"
 	"github.com/trek10inc/awsets/context"
@@ -33,7 +34,7 @@ func (l AWSAmplifyApp) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 
 	err := Paginator(func(nt *string) (*string, error) {
 		apps, err := svc.ListApps(ctx.Context, &amplify.ListAppsInput{
-			MaxResults: 100,
+			MaxResults: *aws.Int32(100),
 			NextToken:  nt,
 		})
 		if err != nil {
@@ -46,7 +47,7 @@ func (l AWSAmplifyApp) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 			err = Paginator(func(nt2 *string) (*string, error) {
 				branches, err := svc.ListBranches(ctx.Context, &amplify.ListBranchesInput{
 					AppId:      v.AppId,
-					MaxResults: 50,
+					MaxResults: *aws.Int32(50),
 					NextToken:  nt2,
 				})
 				if err != nil {
@@ -68,7 +69,7 @@ func (l AWSAmplifyApp) List(ctx context.AWSetsCtx) (*resource.Group, error) {
 			err = Paginator(func(nt2 *string) (*string, error) {
 				domains, err := svc.ListDomainAssociations(ctx.Context, &amplify.ListDomainAssociationsInput{
 					AppId:      v.AppId,
-					MaxResults: 50,
+					MaxResults: *aws.Int32(50),
 					NextToken:  nt2,
 				})
 				if err != nil {

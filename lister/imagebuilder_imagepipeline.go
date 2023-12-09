@@ -3,6 +3,7 @@ package lister
 import (
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/imagebuilder"
 	"github.com/trek10inc/awsets/arn"
 	"github.com/trek10inc/awsets/context"
@@ -24,12 +25,11 @@ func (l AWSImageBuilderImagePipeline) Types() []resource.ResourceType {
 }
 
 func (l AWSImageBuilderImagePipeline) List(ctx context.AWSetsCtx) (*resource.Group, error) {
-
 	svc := imagebuilder.NewFromConfig(ctx.AWSCfg)
 	rg := resource.NewGroup()
 	err := Paginator(func(nt *string) (*string, error) {
 		res, err := svc.ListImagePipelines(ctx.Context, &imagebuilder.ListImagePipelinesInput{
-			MaxResults: 100,
+			MaxResults: aws.Int32(100),
 			NextToken:  nt,
 		})
 		if err != nil {

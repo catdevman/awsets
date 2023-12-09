@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/service/imagebuilder"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/trek10inc/awsets/arn"
 	"github.com/trek10inc/awsets/context"
 	"github.com/trek10inc/awsets/resource"
@@ -29,7 +30,7 @@ func (l AWSImageBuilderInfrastructureConfig) List(ctx context.AWSetsCtx) (*resou
 	rg := resource.NewGroup()
 	err := Paginator(func(nt *string) (*string, error) {
 		res, err := svc.ListInfrastructureConfigurations(ctx.Context, &imagebuilder.ListInfrastructureConfigurationsInput{
-			MaxResults: 100,
+			MaxResults: aws.Int32(100),
 			NextToken:  nt,
 		})
 		if err != nil {
